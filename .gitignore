@@ -1,0 +1,27 @@
+# Archivos del sistema (macOS)
+.DS_Store
+.localized
+
+# Archivos comprimidos
+*.zip
+*.rar
+*.7z
+
+# Grabaciones y videos
+*.mov
+*.mp4
+
+# Carpetas que no deberían trackearse
+node_modules/
+dist/
+build/
+
+# Archivos de entorno
+.env
+.env.*
+
+# Archivos temporales y backups
+*.log
+*.tmp
+*.swp
+*~

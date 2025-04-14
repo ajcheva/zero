@@ -1,0 +1,65 @@
+
+body {
+  background-color: #111827; 
+  color: #d1d5db; 
+  font-family: 'Share Tech Mono', monospace;
+  margin: 0;
+  padding: 0;
+}
+
+
+header {
+  text-align: center;
+  padding: 20px;
+  background: linear-gradient(to right, #0f0c29, #302b63, #24243e); 
+  color: #a5f3fc; 
+  box-shadow: 0 0 20px #0ff;
+}
+
+.saludar {
+  background-color: #0f172a;
+  color: #7dd3fc;
+  border: 2px solid #38bdf8;
+  padding: 10px 20px;
+  margin: 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.saludar:hover {
+  background-color: #1e293b;
+  box-shadow: 0 0 10px #38bdf8;
+}
+
+#mensaje {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 1.2rem;
+  color: #f0abfc; 
+}
+
+#tecnologías {
+  margin: 50px;
+  background-color: #1f2937;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px #6366f1;
+}
+
+@keyframes glow {
+  0% {
+    text-shadow: 0 0 5px #fff, 0 0 10px #0ff, 0 0 20px #0ff;
+  }
+  50% {
+    text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff;
+  }
+  100% {
+    text-shadow: 0 0 5px #fff, 0 0 10px #0ff, 0 0 20px #0ff;
+  }
+}
+
+.glow {
+  animation: glow 1.5s infinite;
+}
