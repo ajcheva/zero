@@ -1,12 +1,21 @@
 
 body {
-  background-color: #111827; 
+  /*background-color: #111827;*/
   color: #d1d5db; 
   font-family: 'Share Tech Mono', monospace;
   margin: 0;
   padding: 0;
 }
 
+body.dark-mode {
+  background-color: #111827;
+  color: #d1d5db;
+}
+
+body.light-mode {
+  background-color: #e0f7fa;
+  color: #1a202c;
+}
 
 header {
   text-align: center;
@@ -41,12 +50,16 @@ header {
 }
 
 #tecnologías {
-  margin: 50px;
-  background-color: #1f2937;
+  margin: 40px auto;
   padding: 20px;
+  max-width: 1000px;
+  width: 90%;
+  background-color: #1f2937;
   border-radius: 10px;
   box-shadow: 0 0 15px #6366f1;
+  text-align: center;
 }
+
 
 @keyframes glow {
   0% {
@@ -62,4 +75,103 @@ header {
 
 .glow {
   animation: glow 1.5s infinite;
+}
+
+
+#modoSwitch {
+  background-color: #0f172a;
+  color: #7dd3fc;
+  border: 2px solid #38bdf8;
+  padding: 10px 20px;
+  margin: 20px auto;
+  display: block;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#modoSwitch:hover {
+  background-color: #1e293b;
+  box-shadow: 0 0 10px #38bdf8;
+}
+
+.galeria {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 20px;
+  text-align: center;
+}
+
+.imagen-tecno {
+  width: 100%;
+  max-width: 300px; 
+  height: auto; 
+  object-fit: cover;
+  border: 2px solid #38bdf8;
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+.imagen-tecno:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px #7dd3fc;
+  cursor: pointer;
+}
+
+
+footer {
+  text-align: center;
+  margin: 20px 0 10px 0;
+  padding: 0;
+}
+
+.linkedin {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.linkedin:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 10px #0ff;
+}
+
+
+@media (max-width: 600px) {
+  .galeria {
+    flex-direction: column;
+    align-items: center;
+  }
+
+
+
+  .tarjeta {
+    width: 200px;
+    text-align: center;
+  }
+  
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  #modoSwitch,
+  .saludar {
+    width: 90%;
+    margin: 10px auto;
+  }
+
+  footer {
+    margin: 20px 0 10px 0;
+  }
+
+  .linkedin {
+    width: 50px;
+    height: 50px;
+  }
 }
