@@ -1,0 +1,44 @@
+{
+  "name": "mi-pagina",
+  "version": "1.0.0",
+  "main": "script.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only server/index.ts",
+    "build": "tsc",
+    "start": "node dist/server/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:api": "ts-node-dev --respawn --transpile-only server/index.ts",
+    "test:api": "newman run postman/mi-api.postman_collection.json --environment postman/local.postman_environment.json --reporters cli",
+    "ci": "concurrently \"npm run start:api\" \"wait-on tcp:4000 && npm run test:api\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ajcheva/zero.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ajcheva/zero/issues"
+  },
+  "homepage": "https://github.com/ajcheva/zero#readme",
+  "description": "",
+  "dependencies": {
+    "@prisma/client": "^6.6.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "pg": "^8.14.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.14.1",
+    "concurrently": "^8.0.0",
+    "newman": "^6.2.1",
+    "prisma": "^6.6.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.3",
+    "wait-on": "^8.0.3"
+  }
+}

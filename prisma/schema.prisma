@@ -1,0 +1,28 @@
+// 1) Generador de cliente Prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+// 2) Bloque de datasource: aquí defines tu PostgreSQL
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")  // debe apuntar a tu .env
+}
+
+// 3) Tus modelos (tablas)
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String
+  password  String
+  createdAt DateTime @default(now())
+}
+
+// (Opcional) otro modelo de ejemplo
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  price       Float
+  createdAt   DateTime @default(now())
+}
