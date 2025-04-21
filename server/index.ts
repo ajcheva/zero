@@ -1,5 +1,5 @@
 // server/index.ts
-import express, { Request, Response } from "express";
+import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { PrismaClient } from "@prisma/client";
@@ -18,13 +18,14 @@ app.use(express.json());
 // 1) GET /api/users → listar todos los usuarios
 app.get(
   "/api/users",
-  async (_req: Request, res: Response) => {
+  async (_req: Request, res: Response, next: NextFunction) => {
     try {
       const users = await prisma.user.findMany();
       res.json(users);
     } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: "Error al listar usuarios" });
+      // imprimimos stack completo antes de delegar al handler global
+      console.error("Error en GET /api/users:", (err as Error).stack);
+      next(err);
     }
   }
 );
@@ -32,29 +33,32 @@ app.get(
 // 2) POST /api/users → crear un nuevo usuario
 app.post(
   "/api/users",
-  async (req: Request, res: Response) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { name, email, password } = req.body;
 
-      // Aquí creamos el newUser en la base de datos
       const newUser = await prisma.user.create({
-        data: {
-          name,
-          email,
-          password,
-        },
+        data: { name, email, password },
       });
 
-      // Devolvemos el usuario creado con código 201 (Created)
       res.status(201).json(newUser);
     } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: "Algo falló al crear el usuario" });
+      console.error("Error en POST /api/users:", (err as Error).stack);
+      next(err);
     }
   }
 );
 
-// ─── LEVANTAR SERVIDOR ────────────────────────────────────────────────
+// ─── HANDLER GLOBAL DE ERRORES ─────────────────────────────────────────
+
+app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
+  // Esto captura _cualquier_ error no manejado arriba
+  console.error("💥 STACK TRACE:", err.stack);
+  res.status(500).json({ error: err.message || "Error interno del servidor" });
+});
+
+// ─── LEVANTAR SERVIDOR ─────────────────────────────────────────────────
+
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
 });

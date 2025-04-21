@@ -9,34 +9,22 @@ on:
 jobs:
   test-api:
     runs-on: ubuntu-latest
-
     steps:
-      # 1) Chequea el código de tu repo
-      - name: Checkout repo
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      # 2) Prepara Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      # 3) Instala dependencias EXACTAS de package-lock.json
       - name: Install dependencies
         run: npm ci
 
-      # 4) Genera el cliente de Prisma (modelos / types)
       - name: Generate Prisma Client
         run: npx prisma generate
 
-      # 5) Arranca tu API en background Ojo con el case sensitive, al ser Linux si importa las carpetas
-      - name: Start API
-        run: npm run start:api &
-      
-      # 6) Espera a que el puerto 4000 esté escuchando
-      - name: Wait for server
-        run: npx wait-on tcp:4000
-
-      # 7) Ejecuta tu suite de tests Postman/Newman
-      - name: Run API tests
-        run: npm run test:api
+      - name: Start API & run tests
+        run: |
+          npm run start:api &            # levanta Express en background
+          npx wait-on tcp:4000            # espera a que el puerto esté ready
+          npm run test:api                # lanza Newman contra ese servidor
