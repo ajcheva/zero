@@ -9,13 +9,19 @@ on:
 jobs:
   test-api:
     runs-on: ubuntu-latest
+
+    # 👉 Inyecta la URL desde el Secret de GitHub
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: 18
 
       - name: Install dependencies
         run: npm ci
@@ -23,8 +29,12 @@ jobs:
       - name: Generate Prisma Client
         run: npx prisma generate
 
+      # (Opcional) Si usas migraciones:
+      - name: Run migrations
+        run: npx prisma migrate deploy
+
       - name: Start API & run tests
         run: |
-          npm run start:api &            # levanta Express en background
-          npx wait-on tcp:4000            # espera a que el puerto esté ready
-          npm run test:api                # lanza Newman contra ese servidor
+          npm run start:api &        # levanta Express en background
+          npx wait-on tcp:4000        # espera a que el puerto esté listo
+          npm run test:api            # corre los tests Newman
