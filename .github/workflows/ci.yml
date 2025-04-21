@@ -29,7 +29,7 @@ jobs:
       - name: Generate Prisma Client
         run: npx prisma generate
 
-      # 5) Arranca tu API en background
+      # 5) Arranca tu API en background Ojo con el case sensitive, al ser Linux si importa las carpetas
       - name: Start API
         run: npm run start:api &
       
