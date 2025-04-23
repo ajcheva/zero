@@ -10,11 +10,10 @@ jobs:
   test-api:
     runs-on: ubuntu-latest
 
-    # 👉 Inyecta la URL desde el Secret de GitHub
+    # 👉 Inyecta la URL de la base de datos y el token de Codecov
     env:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      # (Opcional) Si tu repo es privado, también necesitas:
-      # CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
     steps:
       - name: Checkout repo
@@ -35,20 +34,25 @@ jobs:
       - name: Run migrations
         run: npx prisma migrate deploy
 
-      - name: Start API & run Newman tests
+      - name: Start API & run Postman tests
         run: |
-          npm run start:api &         
-          npx wait-on tcp:4000         
-          npm run test:api            
-
-      # ─── NUEVOS PASOS PARA COBERTURA ─────────────────────
+          npm run start:api &        # levanta Express en background
+          npx wait-on tcp:4000        # espera a que el puerto esté listo
+          npm run test:api            # corre Newman contra tu colección
 
       - name: Run unit tests & generate coverage
-        run: npm run coverage
+        # Asegúrate de tener definidos en package.json:
+        #   "test:unit": "jest",
+        #   "coverage": "jest --coverage"
+        run: |
+          npm run test:unit
+          npm run coverage
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
+          # Puedes usar directamente ${{ secrets.CODECOV_TOKEN }} aquí,
+          # o referenciarlo vía la variable de entorno CODECOV_TOKEN
+          token: ${{ env.CODECOV_TOKEN }}
           files: coverage/lcov.info
-          # fail_ci_if_error asegura que la subida de cobertura sea obligatoria
           fail_ci_if_error: true
