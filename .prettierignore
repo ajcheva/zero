@@ -1,0 +1,5 @@
+# archivos/carpetas a ignorar por Prettier
+node_modules/
+dist/
+build/
+*.log
