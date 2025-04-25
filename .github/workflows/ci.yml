@@ -9,10 +9,8 @@ on:
 jobs:
   test-api:
     runs-on: ubuntu-latest
-
     env:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      CODECOV_TOKEN:  ${{ secrets.CODECOV_TOKEN }}
 
     steps:
       - name: Checkout repo
@@ -32,25 +30,18 @@ jobs:
       - name: Run migrations
         run: npx prisma migrate deploy
 
-      - name: Start API in background
-        run: npm run start:api &
+      - name: Start API & run Newman tests
+        run: |
+          npm run start:api & 
+          npx wait-on tcp:4000 
+          npm run test:api
 
-      - name: Wait for API
-        run: npx wait-on tcp:4000
-
-      - name: Run Postman tests
-        run: npm run test:api
-
-      # ─── NUEVOS PASOS ────────────────────────────────────
-
-      - name: Run unit tests & generate coverage
+      - name: Run unit tests & collect coverage
         run: npm run coverage
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}      # token repo-specific
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: coverage/lcov.info
           flags: unittests
-          fail_ci_if_error: true
-          verbose: true
