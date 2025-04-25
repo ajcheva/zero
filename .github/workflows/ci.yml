@@ -10,7 +10,6 @@ jobs:
   test-api:
     runs-on: ubuntu-latest
 
-    # 👉 Inyecta la URL de la base de datos y el token de Codecov
     env:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
